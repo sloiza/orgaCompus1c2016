@@ -8,8 +8,6 @@
 	#include <stdbool.h>
 
 
-	#define SIZE_MAT 50
-
 	typedef struct matrix {
         size_t rows;
         size_t cols;
@@ -31,21 +29,12 @@
 
 	void printHelp();
 
-	void printLinea(int fil, int col, double* matrix);
-
-	void finally(double* m1,double* m2,double* out);
-
-	double* leerMatriz(int* fil, int* col);
-
 	int  checkArguments(int,char*[]);
-
-	extern void multiplicarMatrices(int f1, int c1, int f2, int c2, double* m1, double* m2, double* out);
-
-	//void multiplicarMatrices(int f1, int c1, int f2, int c2, double* m1, double* m2, double* out);
 
 	/* Devuelve el primer elemento del archivo a leer, es decir la dimension*/
 	int leerDimensionMatriz();
 
-    void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2);
+	/* Lee el par de matrices de una linea del stdin*/
+    void leerMatrices(int dimension, matrix_t* matriz1, matrix_t* matriz2);
 
 	#endif /* TP0_H_ */

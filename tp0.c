@@ -1,25 +1,5 @@
 #include "tp0.h"
 
-
-// Destructor de matrix_t
-void destroy_matrix(matrix_t* m){
-
-}
-
-// Imprime matrix_t sobre el file pointer fp en el formato solicitado
-// por el enunciado
-int print_matrix(FILE* fp, matrix_t* m){
-    return 0;
-
-}
-
-// Multiplica las matrices en m1 y m2
-matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2){
-    return 0;
-
-}
-
-
 void printHelp() {
 	char *help = "Usage:"
 			"\t ./tp0 -h \n"
@@ -35,31 +15,6 @@ void printHelp() {
 	printf("%s", help);
 }
 
-void printLinea(int fil, int col, double* matrix){
-	printf("%dx%d ", fil, col);
-	if (ferror(stdout)){
-		fprintf(stderr, "Error printing stdout\n");
-		free(matrix);
-		matrix = NULL;
-		exit(EXIT_FAILURE);
-	}
-	for(int i=0;i<fil*col;i++){
-		printf(" %lf",matrix[i]);
-		if (ferror(stdout)){
-			fprintf(stderr, "Error printing stdout\n");
-			free(matrix);
-			matrix = NULL;
-			exit(EXIT_FAILURE);
-		}
-	}
-	printf("\n");
-	if (ferror(stdout)){
-		fprintf(stderr, "Error printing stdout\n");
-		free(matrix);
-		matrix = NULL;
-		exit(EXIT_FAILURE);
-	}
-}
 
 // Devuelve mensaje de ayuda si el segundo argumento es -h o --help y
 // la version si es -V, -v o --version. En cualquier otro caso devuelve 1.
@@ -80,112 +35,25 @@ int checkArguments(int cantidadArgumentos, char* argumentos[]) {
 	return retorno;
 }
 
- void multiplicarMatrices(int f1, int c1, int f2, int c2, double* m1, double* m2, double* out) {
-
-  int pos = 0;
- 	int i,j,k, m;
- 	for( i =0 ; i < f1*c1; i=i+c1){
- 		for(k=0; k < c2 ; k++){
- 			double sum = 0.0;
- 			m = i;
- 			// printf("Entro for de K con k = %d\n",k );
- 			for(j=k; j < f2*c2; j=j+c2){
- 				sum+= m1[m]*m2[j];
- 				m++;
- 			}
- 			out[pos] = sum;
- 			pos++;
- 		}
- 	}
- }
-
-// no se usaria mas
-double* leerMatriz(int* fil, int* col ){
-	char x;
-	double* m = NULL;
-	double value = 0.0;
-	int cantNums;
-	if(( fscanf(stdin, "%d %c %d", fil, &x, col )==3) && !feof(stdin)){
-//            printf("primer numero: %d", *fil);
-		if (ferror (stdin)){
-			printf ("Error reading stdin\n");
-			if(m!=NULL){
-				free(m);
-				m = NULL;
-			}
-			exit(EXIT_FAILURE);
-		}
-		cantNums = (*fil) * (*col);
-		m = (double*) malloc(sizeof(double)*cantNums);
-		if(m == NULL){
-			fprintf(stderr, "Error malloc \n");
-		}
-
-		for(int j =0;j<cantNums; j++){
-			if(fscanf(stdin, "%lf", &value) ==1){
-				if (ferror (stdin)){
-					printf ("Error reading stdin\n");
-					if(m!=NULL){
-						free(m);
-						m = NULL;
-					}
-					exit(EXIT_FAILURE);
-				}
-				m[j] = value;
-			}else{
-				fprintf(stderr, "Matriz inválida \n" );
-				if(m!=NULL){
-					free(m);
-					m = NULL;
-				}
-				exit(EXIT_FAILURE);
-			}
-
-		}
-	}else{
-		if(m!=NULL){
-			free(m);
-			m = NULL;
-		}
-		exit(EXIT_FAILURE);
-	}
-
-	return m;
-}
-
-void finally(double* m1,double* m2,double* out){
-	if(m1 != NULL){
-		free(m1);
-		m1 = NULL;
-	}
-	if(m2 != NULL){
-		free(m2);
-		m2 = NULL;
-	}
-	if(out !=NULL){
-		free(out);
-		out = NULL;
-	}
-}
 
 // Lee el primer elemento del stdin que corresponde a la dimension de la matriz cuadrada
 int leerDimensionMatriz(){
+
     int dimension = 0;
     if(( fscanf(stdin, "%d", &dimension)==1) && !feof(stdin)){
             printf("dimension de la matriz cuadrada: %d\n", dimension);
+            // TODO, manejo de errores
     }
     return dimension;
 }
 
 
-
-
-
 // Constructor de matrix_t
 matrix_t* create_matrix(size_t filas, size_t columnas){
+
     matrix_t* matriz;
     matriz = malloc(sizeof(matrix_t));
-    (*matriz).array = malloc(sizeof(double*)*filas*columnas);
+    (*matriz).array = malloc(sizeof(double)*filas*columnas);
     (*matriz).rows = filas;
     (*matriz).cols = columnas;
 
@@ -193,12 +61,11 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
 }
 
 
-void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
-    double* x;
-    x = malloc(sizeof(double)*100);
+void leerMatrices(int dimension, matrix_t* matriz1, matrix_t* matriz2){
+
 	double* arrayNumeros = NULL; // array que contendra todos los elementos de ambas matrices
 	double value = 0.0; // elemento corriente de la iteracion
-	int cantNums;
+	int cantNums = 0;
 
 	// Si no se alcanzo el fin del archivo
 	if(!feof(stdin)){
@@ -212,7 +79,7 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 		}
 
 		//cantidad de numeros == 2x(NxN) (lee dos matrices)
-        cantNums = ((int)dimension*(int)dimension)*2;
+        cantNums = (dimension*dimension)*2;
 		arrayNumeros = (double*) malloc(sizeof(double)*cantNums);
 		if(arrayNumeros == NULL){
 			fprintf(stderr, "Error malloc \n");
@@ -250,62 +117,90 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 
     for(int j = 0; j<cantNums; j++){
         if(j>=cantNums/2){
-            matriz2.array[j-(cantNums/2)] = arrayNumeros[j];
+            (*matriz2).array[j-(cantNums/2)] = arrayNumeros[j];
         }
-        matriz1.array[j] = arrayNumeros[j];
+        (*matriz1).array[j] = arrayNumeros[j];
     }
 
     for(int i = 0; i < cantNums/2; i++){
-        printf("matriz 1: elemento %d, valor: %lf \n",i, matriz1.array[i]);
+        printf("matriz 1: elemento %d, valor: %lf \n",i, (*matriz1).array[i]);
     }
 
     for(int i = 0; i < cantNums/2; i++){
-        printf("matriz 2: elemento %d, valor: %lf \n",i, matriz2.array[i]);
+        printf("matriz 2: elemento %d, valor: %lf \n",i, (*matriz2).array[i]);
     }
 }
 
 
+// Multiplica las matrices en m1 y m2
+matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2){
+
+    int dimension = (*m1).rows;
+    matrix_t* matrizResultado = create_matrix(dimension,dimension);
+    int i, j, k;
+
+    printf("#filas m1 : %d \n", (*m1).rows);
+    printf("#cols m1 : %d \n", (*m1).cols);
+    printf("#filas m2 : %d \n", (*m2).rows);
+    printf("#cols m2 : %d \n", (*m2).cols);
+
+    // Multiplicacion m1 * m2
+    for (i = 0; i < dimension; i++){
+        for (j = 0; j < dimension; j++){
+            // elemento Cij
+            (*matrizResultado).array[j + i * dimension] = 0; // inicializa a 0 acumulador de Cij
+            for(k = 0; k < dimension; k++){
+                (*matrizResultado).array[j + i * dimension] += (*m1).array[k + i * dimension] * (*m2).array[j + k * dimension];
+            }
+        }
+    }
+
+    printf("matriz resultado: \n");
+    for (i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrizResultado).array[i]);
+
+    return matrizResultado;
+}
+
+// Destructor de matrix_t
+void destroy_matrix(matrix_t* matriz){
+    if(matriz != NULL){
+		free(matriz);
+		matriz = NULL;
+	}
+}
+
+
+// Imprime matrix_t sobre el file pointer fp en el formato solicitado
+// por el enunciado
+int print_matrix(FILE* fp, matrix_t* m){
+    // TODO
+    return 0;
+
+}
+
+
 // argc == argument count, argv== argument vector
- int main(int argc, char *argv[])
-{
+ int main(int argc, char *argv[]) {
 
 	if (!checkArguments(argc,argv)){
 		return 1; // Error en los argumentos
 	}else{
 		do{
             int dimension = leerDimensionMatriz();
-            matrix_t matriz1 = *create_matrix(dimension,dimension);
-            matrix_t matriz2 = *create_matrix(dimension,dimension);
+            matrix_t* matriz2 = create_matrix(dimension,dimension);
+            matrix_t* matriz1 = create_matrix(dimension,dimension);
+
+            // Lee el par de matrices de una linea del stdin
             leerMatrices(dimension, matriz1, matriz2);
 
-            /*
-			int fil1 = 0, col1 = 0, fil2 = 0, col2 = 0;
-			double* m1 = NULL;
-			double* m2 = NULL;
-			double* out = NULL;
+            matrix_multiply(matriz1, matriz2);
 
-			m1 = leerMatriz(&fil1, &col1 );
-			m2 = leerMatriz(&fil2, &col2 );
+            //Borra las matrices creadas
+            destroy_matrix(matriz1);
+            destroy_matrix(matriz2);
 
-			if (col1== fil2){
-				out = (double*) malloc(sizeof(double)*fil1*col2);
-				if(out == NULL){
-					fprintf(stderr, "Error malloc \n");
-				}
-				multiplicarMatrices(fil1, col1, fil2, col2, m1, m2, out);
-				printLinea(fil1, col2, out);
-
-
-				finally(m1,m2,out);
-			}else{
-				fprintf(stderr,"Matrices incorrectas para la multiplicacion. \n");
-				finally(m1,m2,out);
-				exit(EXIT_FAILURE);
-			}
-			*/
 		}while(!feof(stdin));
 	}
 	return 0;
-
 }
 

@@ -23,3 +23,46 @@ matriz 2: elemento 0, valor: 5.000000
 matriz 2: elemento 1, valor: 6.000000 
 matriz 2: elemento 2, valor: 7.000000 
 matriz 2: elemento 3, valor: 8.000000 
+#filas m1 : 2 
+#cols m1 : 2 
+#filas m2 : 2 
+#cols m2 : 2 
+matriz resultado: 
+[0] = 19.000000
+[1] = 22.000000
+[2] = 43.000000
+[3] = 50.000000
+dimension de la matriz cuadrada: 2
+iteracion: 0
+elemento: 0.000000 
+iteracion: 1
+elemento: 1.000000 
+iteracion: 2
+elemento: 2.000000 
+iteracion: 3
+elemento: 3.000000 
+iteracion: 4
+elemento: 4.000000 
+iteracion: 5
+elemento: 5.000000 
+iteracion: 6
+elemento: 6.000000 
+iteracion: 7
+elemento: 7.000000 
+matriz 1: elemento 0, valor: 0.000000 
+matriz 1: elemento 1, valor: 1.000000 
+matriz 1: elemento 2, valor: 2.000000 
+matriz 1: elemento 3, valor: 3.000000 
+matriz 2: elemento 0, valor: 4.000000 
+matriz 2: elemento 1, valor: 5.000000 
+matriz 2: elemento 2, valor: 6.000000 
+matriz 2: elemento 3, valor: 7.000000 
+#filas m1 : 2 
+#cols m1 : 2 
+#filas m2 : 2 
+#cols m2 : 2 
+matriz resultado: 
+[0] = 6.000000
+[1] = 7.000000
+[2] = 26.000000
+[3] = 31.000000
