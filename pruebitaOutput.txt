@@ -1,4 +1,4 @@
-dimension de la matriz cuadrada: 3
+dimension de la matriz cuadrada: 2
 iteracion: 0
 elemento: 1.000000 
 iteracion: 1
@@ -15,23 +15,11 @@ iteracion: 6
 elemento: 7.000000 
 iteracion: 7
 elemento: 8.000000 
-iteracion: 8
-elemento: 9.000000 
-iteracion: 9
-elemento: 1.000000 
-iteracion: 10
-elemento: 2.000000 
-iteracion: 11
-elemento: 3.000000 
-iteracion: 12
-elemento: 4.000000 
-iteracion: 13
-elemento: 5.000000 
-iteracion: 14
-elemento: 6.000000 
-iteracion: 15
-elemento: 7.000000 
-iteracion: 16
-elemento: 8.000000 
-iteracion: 17
-elemento: 9.000000 
+matriz 1: elemento 0, valor: 1.000000 
+matriz 1: elemento 1, valor: 2.000000 
+matriz 1: elemento 2, valor: 3.000000 
+matriz 1: elemento 3, valor: 4.000000 
+matriz 2: elemento 0, valor: 5.000000 
+matriz 2: elemento 1, valor: 6.000000 
+matriz 2: elemento 2, valor: 7.000000 
+matriz 2: elemento 3, valor: 8.000000 

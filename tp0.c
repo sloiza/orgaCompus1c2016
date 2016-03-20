@@ -142,8 +142,6 @@ double* leerMatriz(int* fil, int* col ){
 			}
 
 		}
-
-
 	}else{
 		if(m!=NULL){
 			free(m);
@@ -187,7 +185,7 @@ int leerDimensionMatriz(){
 matrix_t* create_matrix(size_t filas, size_t columnas){
     matrix_t* matriz;
     matriz = malloc(sizeof(matrix_t));
-
+    (*matriz).array = malloc(sizeof(double*)*filas*columnas);
     (*matriz).rows = filas;
     (*matriz).cols = columnas;
 
@@ -220,7 +218,7 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 			fprintf(stderr, "Error malloc \n");
 		}
 
-		for(int j =0;j<cantNums; j++){
+		for(int j = 0;j<cantNums; j++){
 			if(fscanf(stdin, "%lf", &value) ==1){
                 printf("iteracion: %d\n",j);
 				if (ferror (stdin)){
@@ -233,7 +231,6 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 				}
 				printf("elemento: %lf \n", value);
 				arrayNumeros[j] = value;
-//				printf("valor: %lf \n", value);
 			}else{
 				fprintf(stderr, "Matriz inválida \n" );
 				if(arrayNumeros!=NULL){
@@ -242,10 +239,7 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 				}
 				exit(EXIT_FAILURE);
 			}
-
 		}
-
-
 	}else{
 		if(arrayNumeros!=NULL){
 			free(arrayNumeros);
@@ -254,8 +248,20 @@ void leerMatrices(int dimension, matrix_t matriz1, matrix_t matriz2){
 		exit(EXIT_FAILURE);
 	}
 
-	// TODO, falta partir el arrayNumeros en 2 y asignarle una mitad a matriz1 y la otra a matriz2
+    for(int j = 0; j<cantNums; j++){
+        if(j>=cantNums/2){
+            matriz2.array[j-(cantNums/2)] = arrayNumeros[j];
+        }
+        matriz1.array[j] = arrayNumeros[j];
+    }
 
+    for(int i = 0; i < cantNums/2; i++){
+        printf("matriz 1: elemento %d, valor: %lf \n",i, matriz1.array[i]);
+    }
+
+    for(int i = 0; i < cantNums/2; i++){
+        printf("matriz 2: elemento %d, valor: %lf \n",i, matriz2.array[i]);
+    }
 }
 
 
