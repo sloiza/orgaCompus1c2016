@@ -64,7 +64,7 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
 // Carga la matrix previamente creada con floats de la matrix
 matrix_t* readMatrix(matrix_t* matrix){
 	double value = 0.0;
-	int cantNums;
+	int cantNums, j;
 
 	cantNums = (*matrix).rows * (*matrix).rows;
 	//m = (double*) malloc(sizeof(double)*cantNums);
@@ -72,7 +72,7 @@ matrix_t* readMatrix(matrix_t* matrix){
 		fprintf(stderr, "Error malloc \n");
 	}
 
-	for(int j =0;j<cantNums; j++){
+	for(j =0;j<cantNums; j++){
 		if(fscanf(stdin, "%lf", &value) ==1){
 			if (ferror (stdin)){
 				printf ("Error reading stdin\n");
@@ -83,7 +83,6 @@ matrix_t* readMatrix(matrix_t* matrix){
 				}
 				exit(EXIT_FAILURE);
 			}
-			printf("Float leido %lf \n", value);
 			(*matrix).array[j] = value;
 		}else{
 			fprintf(stderr, "Matriz inválida \n" );
@@ -176,12 +175,6 @@ int print_matrix( matrix_t* matrix){
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
-	            printf("Matrix 1 \n");
-                for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix1).array[i]);
-
-				printf("Matrix 2 \n");
-				for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix2).array[i]);
-
 	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
 
 	            print_matrix(matrizResultado);
