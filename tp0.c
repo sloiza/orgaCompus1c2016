@@ -37,7 +37,7 @@ int checkArguments(int cantidadArgumentos, char* argumentos[]) {
 
 
 // Lee el primer elemento del stdin que corresponde a la dimension de la matriz cuadrada
-int leerDimensionMatriz(){
+int readMatrixDimension(){
 
     int dimension = 0;
     if(( fscanf(stdin, "%d", &dimension)==1) && !feof(stdin)){
@@ -166,7 +166,7 @@ int print_matrix( matrix_t* matrix){
 		return 1; // Error en los argumentos
 	}else{
 		do{
-            int dimension = leerDimensionMatriz();
+            int dimension = readMatrixDimension();
             if(feof(stdin)){
                 return 0;
             }
@@ -175,6 +175,7 @@ int print_matrix( matrix_t* matrix){
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
+
 	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
 
 	            print_matrix(matrizResultado);
