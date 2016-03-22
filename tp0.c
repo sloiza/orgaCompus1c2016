@@ -65,7 +65,7 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
 matrix_t* readMatrix(matrix_t* matrix){
 	double value = 0.0;
 	int cantNums;
-	
+
 	cantNums = (*matrix).rows * (*matrix).rows;
 	//m = (double*) malloc(sizeof(double)*cantNums);
 	if(matrix == NULL){
@@ -101,7 +101,7 @@ matrix_t* readMatrix(matrix_t* matrix){
 
 // Multiplica las matrices en m1 y m2
 matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2){
-	
+
     int dimension = (*m1).rows;
     matrix_t* matrizResultado = create_matrix(dimension,dimension);
   	int pos = 0;
@@ -133,13 +133,13 @@ void destroy_matrix(matrix_t* matriz){
 }
 
 
-// Imprime matrix_t 
+// Imprime matrix_t
 int print_matrix( matrix_t* matrix){
 	int dim = (*matrix).rows;
 	printf("%d ", dim);
 	if (ferror(stdout)){
 		fprintf(stderr, "Error printing stdout\n");
-		destroy_matrix(matrix); 
+		destroy_matrix(matrix);
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0;i<dim*dim;i++){
@@ -168,21 +168,24 @@ int print_matrix( matrix_t* matrix){
 	}else{
 		do{
             int dimension = leerDimensionMatriz();
+            if(feof(stdin)){
+                return 0;
+            }
             if(dimension > 0){
 	            matrix_t* matrix1 = create_matrix(dimension,dimension);
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
 	            printf("Matrix 1 \n");
-				 for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix1).array[i]);
+                for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix1).array[i]);
 
 				printf("Matrix 2 \n");
 				for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix2).array[i]);
-	    
+
 	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
 
 	            print_matrix(matrizResultado);
-	            
+
 	            //Borra las matrices creadas
 	            destroy_matrix(matrix1);
 	            destroy_matrix(matrix2);
