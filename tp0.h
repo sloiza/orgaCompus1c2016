@@ -22,7 +22,7 @@
 
     // Imprime matrix_t sobre el file pointer fp en el formato solicitado
     // por el enunciado
-    int print_matrix(FILE* fp, matrix_t* m);
+    int print_matrix(matrix_t* m);
 
     // Multiplica las matrices en m1 y m2
     matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2);
@@ -34,7 +34,7 @@
 	/* Devuelve el primer elemento del archivo a leer, es decir la dimension*/
 	int leerDimensionMatriz();
 
-	/* Lee el par de matrices de una linea del stdin*/
-    void leerMatrices(int dimension, matrix_t* matriz1, matrix_t* matriz2);
+	/* Lee matriz de una linea del stdin*/
+	matrix_t* readMatrix(matrix_t* matrix);
 
 	#endif /* TP0_H_ */
