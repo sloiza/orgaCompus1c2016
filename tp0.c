@@ -37,7 +37,7 @@ int checkArguments(int cantidadArgumentos, char* argumentos[]) {
 
 
 // Lee el primer elemento del stdin que corresponde a la dimension de la matriz cuadrada
-int leerDimensionMatriz(){
+int readMatrixDimension(){
 
     int dimension = 0;
     if(( fscanf(stdin, "%d", &dimension)==1) && !feof(stdin)){
@@ -83,7 +83,7 @@ matrix_t* readMatrix(matrix_t* matrix){
 				}
 				exit(EXIT_FAILURE);
 			}
-			printf("Float leido %lf \n", value);
+//			printf("Float leido %lf \n", value);
 			(*matrix).array[j] = value;
 		}else{
 			fprintf(stderr, "Matriz inválida \n" );
@@ -167,7 +167,7 @@ int print_matrix( matrix_t* matrix){
 		return 1; // Error en los argumentos
 	}else{
 		do{
-            int dimension = leerDimensionMatriz();
+            int dimension = readMatrixDimension();
             if(feof(stdin)){
                 return 0;
             }
@@ -176,11 +176,6 @@ int print_matrix( matrix_t* matrix){
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
-	            printf("Matrix 1 \n");
-                for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix1).array[i]);
-
-				printf("Matrix 2 \n");
-				for (int i = 0; i < dimension * dimension; i++) printf("[%d] = %lf\n", i, (*matrix2).array[i]);
 
 	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
 
