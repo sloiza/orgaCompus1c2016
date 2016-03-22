@@ -32,7 +32,7 @@
 
     // Imprime matrix_t sobre el file pointer fp en el formato solicitado
     // por el enunciado
-    int print_matrix(matrix_t* m);
+    int print_matrix(FILE* f, matrix_t* m);
 
     // Multiplica las matrices en m1 y m2
     matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2);

@@ -133,23 +133,23 @@ void destroy_matrix(matrix_t* matriz){
 
 
 // Imprime matrix_t
-int print_matrix( matrix_t* matrix){
+int print_matrix(FILE* fd, matrix_t* matrix){
 	int dim = (*matrix).rows;
-	printf("%d ", dim);
+	fprintf(fd, "%d ", dim);
 	if (ferror(stdout)){
 		fprintf(stderr, "Error printing stdout\n");
 		destroy_matrix(matrix);
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0;i<dim*dim;i++){
-		printf(" %lf",(*matrix).array[i]);
+		fprintf(fd, " %lf",(*matrix).array[i]);
 		if (ferror(stdout)){
 			fprintf(stderr, "Error printing stdout\n");
 			destroy_matrix(matrix);
 			exit(EXIT_FAILURE);
 		}
 	}
-	printf("\n");
+	fprintf(fd, "\n");
 	if (ferror(stdout)){
 		fprintf(stderr, "Error printing stdout\n");
 		destroy_matrix(matrix);
@@ -177,8 +177,8 @@ int print_matrix( matrix_t* matrix){
 	            matrix2 = readMatrix(matrix2);
 
 	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
-
-	            print_matrix(matrizResultado);
+	            
+	            print_matrix(stdout, matrizResultado);
 
 	            //Borra las matrices creadas
 	            destroy_matrix(matrix1);

@@ -159,9 +159,9 @@ $LC9:
 	.ascii	"Error reading stdin\n\000"
 	.text
 	.align	2
-	.globl	leerDimensionMatriz
-	.ent	leerDimensionMatriz
-leerDimensionMatriz:
+	.globl	readMatrixDimension
+	.ent	readMatrixDimension
+readMatrixDimension:
 	.frame	$fp,48,$ra		# vars= 8, regs= 3/0, args= 16, extra= 8
 	.mask	0xd0000000,-8
 	.fmask	0x00000000,0
@@ -204,8 +204,8 @@ $L25:
 	lw	$fp,36($sp)
 	addu	$sp,$sp,48
 	j	$ra
-	.end	leerDimensionMatriz
-	.size	leerDimensionMatriz, .-leerDimensionMatriz
+	.end	readMatrixDimension
+	.size	readMatrixDimension, .-readMatrixDimension
 	.align	2
 	.globl	create_matrix
 	.ent	create_matrix
@@ -559,12 +559,14 @@ print_matrix:
 	sw	$gp,32($sp)
 	move	$fp,$sp
 	sw	$a0,48($fp)
-	lw	$v0,48($fp)
+	sw	$a1,52($fp)
+	lw	$v0,52($fp)
 	lw	$v0,0($v0)
 	sw	$v0,24($fp)
-	la	$a0,$LC13
-	lw	$a1,24($fp)
-	la	$t9,printf
+	lw	$a0,48($fp)
+	la	$a1,$LC13
+	lw	$a2,24($fp)
+	la	$t9,fprintf
 	jal	$ra,$t9
 	lhu	$v0,__sF+100
 	srl	$v0,$v0,6
@@ -574,7 +576,7 @@ print_matrix:
 	la	$a1,$LC14
 	la	$t9,fprintf
 	jal	$ra,$t9
-	lw	$a0,48($fp)
+	lw	$a0,52($fp)
 	la	$t9,destroy_matrix
 	jal	$ra,$t9
 	li	$a0,1			# 0x1
@@ -592,15 +594,16 @@ $L56:
 	bne	$v0,$zero,$L59
 	b	$L57
 $L59:
-	lw	$a0,48($fp)
+	lw	$a0,52($fp)
 	lw	$v0,28($fp)
 	sll	$v1,$v0,3
 	lw	$v0,8($a0)
 	addu	$v0,$v1,$v0
-	la	$a0,$LC15
+	lw	$a0,48($fp)
+	la	$a1,$LC15
 	lw	$a2,0($v0)
 	lw	$a3,4($v0)
-	la	$t9,printf
+	la	$t9,fprintf
 	jal	$ra,$t9
 	lhu	$v0,__sF+100
 	srl	$v0,$v0,6
@@ -610,7 +613,7 @@ $L59:
 	la	$a1,$LC14
 	la	$t9,fprintf
 	jal	$ra,$t9
-	lw	$a0,48($fp)
+	lw	$a0,52($fp)
 	la	$t9,destroy_matrix
 	jal	$ra,$t9
 	li	$a0,1			# 0x1
@@ -622,8 +625,9 @@ $L58:
 	sw	$v0,28($fp)
 	b	$L56
 $L57:
-	la	$a0,$LC16
-	la	$t9,printf
+	lw	$a0,48($fp)
+	la	$a1,$LC16
+	la	$t9,fprintf
 	jal	$ra,$t9
 	lhu	$v0,__sF+100
 	srl	$v0,$v0,6
@@ -633,7 +637,7 @@ $L57:
 	la	$a1,$LC14
 	la	$t9,fprintf
 	jal	$ra,$t9
-	lw	$a0,48($fp)
+	lw	$a0,52($fp)
 	la	$t9,destroy_matrix
 	jal	$ra,$t9
 	li	$a0,1			# 0x1
@@ -681,7 +685,7 @@ main:
 	sw	$v0,40($fp)
 	b	$L62
 $L65:
-	la	$t9,leerDimensionMatriz
+	la	$t9,readMatrixDimension
 	jal	$ra,$t9
 	sw	$v0,24($fp)
 	lhu	$v0,__sF+12
@@ -716,7 +720,8 @@ $L68:
 	la	$t9,matrix_multiply
 	jal	$ra,$t9
 	sw	$v0,36($fp)
-	lw	$a0,36($fp)
+	la	$a0,__sF+88
+	lw	$a1,36($fp)
 	la	$t9,print_matrix
 	jal	$ra,$t9
 	lw	$a0,28($fp)
