@@ -37,4 +37,8 @@
     // Multiplica las matrices en m1 y m2
     matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2);
 
+    // Imprime en el archivo indicado por el file descriptor fd, el string C
+    // apuntador por str, sin incluir su byte nulo de finalizacion.
+    ssize_t print_string(int fd, char* str);
+
 	#endif /* TP0_H_ */
