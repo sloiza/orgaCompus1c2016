@@ -136,29 +136,49 @@ void destroy_matrix(matrix_t* matriz){
 
 
 // Imprime matrix_t
-int print_matrix(FILE* fd, matrix_t* matrix){
+int print_matrix(FILE* fp, matrix_t* matrix){
 	int dim = (*matrix).rows;
-	fprintf(fd, "%d ", dim);
-	if (ferror(stdout)){
-		fprintf(stderr, "Error printing stdout\n");
-		destroy_matrix(matrix);
-		exit(EXIT_FAILURE);
-	}
+
+	char* string = (char*)malloc(200*sizeof(char)); //buffer 200 bytes
+	sprintf(string, "%d", dim); // carga la dimension en el string
+
+	char* stringAux = (char*)malloc(10*sizeof(char)); //buffer 10 bytes
 	for(int i=0;i<dim*dim;i++){
-		fprintf(fd, " %lf",(*matrix).array[i]);
-		if (ferror(stdout)){
-			fprintf(stderr, "Error printing stdout\n");
-			destroy_matrix(matrix);
-			exit(EXIT_FAILURE);
-		}
+//		fprintf(fd, " %lf",(*matrix).array[i]); // implementacion anterior
+        int tamanio = sizeof(stringAux);
+        snprintf(stringAux, tamanio, " %lf ", (*matrix).array[i]);
+		strcat(string, stringAux); // concatena el elemento actual en el string
 	}
-	fprintf(fd, "\n");
-	if (ferror(stdout)){
-		fprintf(stderr, "Error printing stdout\n");
-		destroy_matrix(matrix);
-		exit(EXIT_FAILURE);
+    strcat(string, "\n");
+
+    int fd = fileno(fp); // Obtiene el file descriptor a partir del file pointer
+    if (fd == -1) {
+        fprintf(stderr, "Error file descriptor");
+        free(string);
+        free(stringAux);
+        exit(EXIT_FAILURE);
+    }
+
+	if(print_string(fd, string) == -1){
+        fprintf(stderr, "Error write syscall");
+	    free(string);
+        free(stringAux);
+        exit(EXIT_FAILURE);
 	}
+    free(string);
+    free(stringAux);
+
 	return 0;
+}
+
+ssize_t print_string(int fd, char* str){
+
+    ssize_t retorno = 0;
+	retorno = write(fd, str, strlen(str)); // llamado a syscall
+	if(retorno < 0){
+        return -1;
+	}
+	return retorno;
 }
 
 
