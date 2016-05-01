@@ -34,7 +34,7 @@
     // por el enunciado
     int print_matrix(FILE* f, matrix_t* m);
 
-    // Multiplica las matrices en m1 y m2
-    matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2);
+    // Multiplica las matrices en m1 y m2i
+    extern void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* out);
 
 	#endif /* TP0_H_ */

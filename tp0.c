@@ -55,7 +55,15 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
 
     matrix_t* matriz;
     matriz = malloc(sizeof(matrix_t));
+    if(matriz == NULL){
+		fprintf(stderr, "Error malloc \n");
+		return NULL;
+	}
     (*matriz).array = malloc(sizeof(double)*filas*columnas);
+    if((*matriz).array == NULL){
+		fprintf(stderr, "Error malloc \n");
+		return NULL;
+	}
     (*matriz).rows = filas;
     (*matriz).cols = columnas;
 
@@ -67,11 +75,7 @@ matrix_t* readMatrix(matrix_t* matrix){
 	int cantNums, j;
 
 	cantNums = (*matrix).rows * (*matrix).rows;
-	//m = (double*) malloc(sizeof(double)*cantNums);
-	if(matrix == NULL){
-		fprintf(stderr, "Error malloc \n");
-	}
-
+	
 	for(j =0;j<cantNums; j++){
 		if(fscanf(stdin, "%lf", &value) ==1){
 			if (ferror (stdin)){
@@ -98,29 +102,28 @@ matrix_t* readMatrix(matrix_t* matrix){
 	return matrix;
 }
 
-// Multiplica las matrices en m1 y m2
-matrix_t* matrix_multiply(matrix_t* m1, matrix_t* m2){
+// // Multiplica las matrices en m1 y m2
+// void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* matrizResultado	){
 
-    int dimension = (*m1).rows;
-    matrix_t* matrizResultado = create_matrix(dimension,dimension);
-  	int pos = 0;
- 	int i,j,k, m;
+//     int pos = 0;
+//  	int i,j,k, m;
+//  	int dimension = (*matrizResultado).rows;
 
- 	for( i =0 ; i < dimension*dimension; i=i+dimension){
- 		for(k=0; k < dimension ; k++){
- 			double sum = 0.0;
- 			m = i;
- 			// printf("Entro for de K con k = %d\n",k );
- 			for(j=k; j < dimension*dimension; j=j+dimension){
- 				sum+= (*m1).array[m]*(*m2).array[j];
- 				m++;
- 			}
- 			(*matrizResultado).array[pos] = sum;
- 			pos++;
- 		}
- 	}
-    return matrizResultado;
-}
+//  	for( i =0 ; i < dimension*dimension; i=i+dimension){
+//  		for(k=0; k < dimension ; k++){
+//  			double sum = 0.0;
+//  			m = i;
+//  			// printf("Entro for de K con k = %d\n",k );
+//  			for(j=k; j < dimension*dimension; j=j+dimension){
+//  				sum+= (*m1).array[m]*(*m2).array[j];
+//  				m++;
+//  			}
+//  			(*matrizResultado).array[pos] = sum;
+//  			pos++;
+//  		}
+//  	}
+
+// }
 
 // Destructor de matrix_t
 void destroy_matrix(matrix_t* matriz){
@@ -167,6 +170,7 @@ int print_matrix(FILE* fd, matrix_t* matrix){
 	}else{
 		do{
             int dimension = readMatrixDimension();
+            printf("DIM MATRIX %d\n", dimension);
             if(feof(stdin)){
                 return 0;
             }
@@ -175,10 +179,25 @@ int print_matrix(FILE* fd, matrix_t* matrix){
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
-
-	            matrix_t* matrizResultado = matrix_multiply(matrix1, matrix2);
-	            
+    			matrix_t* matrizResultado = create_matrix(dimension,dimension);
+    			printf("m1: %p\n", matrix1 );
+    			printf("m1.array: %p\n", (*matrix1).array );
+    			printf("m2: %p\n", matrix2 );
+    			printf("m2.array: %p\n", (*matrix2).array );
+    			printf("out: %p\n", matrizResultado );
+    			printf("out.array: %p\n", (*matrizResultado).array );
+	            matrix_multiply(matrix1, matrix2, matrizResultado);
+	            printf("out multiply: %p\n", matrizResultado );
+    			printf("out.array: %p\n", (*matrizResultado).array );
 	            print_matrix(stdout, matrizResultado);
+	            size_t size = sizeof(size_t);
+	            printf("Size: %zd\n", size);
+	            size_t mat = sizeof(matrix_t);
+	            printf("Size mat: %zd\n", mat);
+   	            size_t mat1 = sizeof(matrix1);
+	            printf("Size mat 1 : %zd\n", mat1);
+   	            size_t mat2 = sizeof(matrix2);
+	            printf("Size mat 2 : %zd\n", mat2);
 
 	            //Borra las matrices creadas
 	            destroy_matrix(matrix1);
