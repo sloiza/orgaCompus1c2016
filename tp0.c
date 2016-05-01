@@ -102,28 +102,28 @@ matrix_t* readMatrix(matrix_t* matrix){
 	return matrix;
 }
 
-// // Multiplica las matrices en m1 y m2
-// void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* matrizResultado	){
+ // Multiplica las matrices en m1 y m2
+ void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* matrizResultado	){
 
-//     int pos = 0;
-//  	int i,j,k, m;
-//  	int dimension = (*matrizResultado).rows;
+    int pos = 0;
+  	int i,j,k, m;
+  	int dimension = (*matrizResultado).rows;
 
-//  	for( i =0 ; i < dimension*dimension; i=i+dimension){
-//  		for(k=0; k < dimension ; k++){
-//  			double sum = 0.0;
-//  			m = i;
-//  			// printf("Entro for de K con k = %d\n",k );
-//  			for(j=k; j < dimension*dimension; j=j+dimension){
-//  				sum+= (*m1).array[m]*(*m2).array[j];
-//  				m++;
-//  			}
-//  			(*matrizResultado).array[pos] = sum;
-//  			pos++;
-//  		}
-//  	}
+  	for( i =0 ; i < dimension*dimension; i=i+dimension){
+  		for(k=0; k < dimension ; k++){
+  			double sum = 0.0;
+  			m = i;
+ 			// printf("Entro for de K con k = %d\n",k );
+  			for(j=k; j < dimension*dimension; j=j+dimension){
+  				sum+= (*m1).array[m]*(*m2).array[j];
+  				m++;
+  			}
+  			(*matrizResultado).array[pos] = sum;
+  			pos++;
+  		}
+  	}
 
-// }
+ }
 
 // Destructor de matrix_t
 void destroy_matrix(matrix_t* matriz){
@@ -142,11 +142,11 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	char* string = (char*)malloc(200*sizeof(char)); //buffer 200 bytes
 	sprintf(string, "%d", dim); // carga la dimension en el string
 
-	char* stringAux = (char*)malloc(10*sizeof(char)); //buffer 10 bytes
+	int bufferDouble = 10*sizeof(char); //buffer 10 bytes
+	char* stringAux = (char*)malloc(bufferDouble); 
 	for(int i=0;i<dim*dim;i++){
 //		fprintf(fd, " %lf",(*matrix).array[i]); // implementacion anterior
-        int tamanio = sizeof(stringAux);
-        snprintf(stringAux, tamanio, " %lf ", (*matrix).array[i]);
+        snprintf(stringAux, bufferDouble, " %lf ", (*matrix).array[i]);
 		strcat(string, stringAux); // concatena el elemento actual en el string
 	}
     strcat(string, "\n");
@@ -171,15 +171,15 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	return 0;
 }
 
-ssize_t print_string(int fd, char* str){
+ ssize_t print_string(int fd, char* str){
 
-    ssize_t retorno = 0;
-	retorno = write(fd, str, strlen(str)); // llamado a syscall
-	if(retorno < 0){
-        return -1;
-	}
-	return retorno;
-}
+     ssize_t retorno = 0;
+ 	retorno = write(fd, str, strlen(str)); // llamado a syscall
+ 	if(retorno < 0){
+         return -1;
+ 	}
+ 	return retorno;
+ }
 
 
 // argc == argument count, argv== argument vector

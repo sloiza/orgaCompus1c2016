@@ -6,7 +6,7 @@
 	#include <string.h>
 	#include <unistd.h>
 	#include <stdbool.h>
-
+	#include <string.h>
 
 	typedef struct matrix {
         size_t rows;
@@ -35,10 +35,11 @@
     int print_matrix(FILE* f, matrix_t* m);
 
     // Multiplica las matrices en m1 y m2i
+    //extern void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* out);
     extern void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* out);
 
     // Imprime en el archivo indicado por el file descriptor fd, el string C
     // apuntador por str, sin incluir su byte nulo de finalizacion.
-    ssize_t print_string(int fd, char* str);
+    extern ssize_t print_string(int fd, char* str);
 
 	#endif /* TP0_H_ */
