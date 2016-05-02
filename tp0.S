@@ -1,10 +1,10 @@
 #include <mips/regdef.h>
 #include <sys/syscall.h>
-	.text
-	.abicalls
-	.align 2
-	.globl	matrix_multiply
-	.ent 	matrix_multiply
+		.text
+		.abicalls
+		.align 2
+		.globl	matrix_multiply
+		.ent 	matrix_multiply
 matrix_multiply:
 		
 		.frame  $fp, 52, ra
@@ -19,7 +19,6 @@ matrix_multiply:
 		sw 		a0, 52($fp) #guardo dir m1
 		sw 		a1, 56($fp) #guardo dir m2
 		sw 		a2, 60($fp) #guardo dir out
-
 
 
 		lw 		t0,52($fp) #t0= dir matrix m1
@@ -111,50 +110,49 @@ endf2: 	lw 		t0, 20($fp) #t0 = i
 
 
 endf1: 	
-	lw t0, 60($fp) #dir matrix out
-	li t3, 0
-	lw t1, 12($fp) #out
-	lw t2, 0($fp) #rows
-	addu t3, t3, t0
-	sw t1,8(t0)
+		lw t0, 60($fp) #dir matrix out
+		li t3, 0
+		lw t1, 12($fp) #out
+		lw t2, 0($fp) #rows
+		addu t3, t3, t0
+		sw t1,8(t0)
 
-	move sp, $fp
-	lw $fp, 48(sp) #recupero fp
-	addu sp,sp,52 #restablezco stack frame
-	jr ra
-	.end matrix_multiply
+		move sp, $fp
+		lw $fp, 48(sp) #recupero fp
+		addu sp,sp,52 #restablezco stack frame
+		jr ra
+		.end matrix_multiply
 
-    .globl print_string
-    .ent print_string
+   		.globl print_string
+   		.ent print_string
 print_string:
-    .frame $fp, 40, ra    #frame multiplo de 8 bytes          
-    .set noreorder      
-    .cpload t9		      #se usa t9 para referenciar data global	
-    .set reorder
+    	.frame $fp, 40, ra    #frame multiplo de 8 bytes          
+   	 	.set noreorder      
+    	.cpload t9		      #se usa t9 para referenciar data global	
+    	.set reorder
 
-    subu sp,sp,40         #reservo el stackframe
-    .cprestore 24         #lw y sw del gp en 24(sp) automatico
+   	 	subu sp,sp,40         #reservo el stackframe
+    	.cprestore 24         #lw y sw del gp en 24(sp) automatico
 
-    sw  $fp,28(sp)
-    sw	ra,32(sp)
-    move $fp,sp		   	  #fp=sp
-    sw	a0,40($fp)        #guarda 1°arg (file descriptor)
-    sw	a1,44($fp)        #guarda 2°arg (string)
-    move a0, a1           #a0=string carga la direc del string como primer arg para llamar a strlen
-    la  t9,strlen         #carga direccion de la funcion strlen
-    jal t9                #llama a strlen retorno en v0
-    move a2, v0           #carga el retorno de strlen como 3 argumento
-    lw a1, 44($fp)        #carga la direccion de inicio del string como 2 argumento
-    lw a0, 40($fp)        #carga el file descriptor como 1 argumento
-    li v0, SYS_write      #carga syscall en v0
-    syscall               #llamado a SYS_write
-    beqz a3,ok  	      #a3=0 --> syscall OK, a3=1 --> syscall error 
-error: li v0, -1          #si error devuelve -1
+    	sw  $fp, 28(sp)		  #guarda fp
+    	sw	ra, 32(sp)		  #guarda ra
+    	move $fp, sp		  #fp=sp
+    	sw	a0, 40($fp)       #guarda 1°arg (file descriptor)
+    	sw	a1, 44($fp)       #guarda 2°arg (string)
+    	move a0, a1           #a0=string carga la direcc del string como primer arg para llamar a strlen
+    	la  t9, strlen        #carga direccion de la funcion strlen
+    	jal t9                #llama a strlen retorno en v0
+    	lw a0, 40($fp)        #carga el file descriptor como 1 argumento
+    	move a2, v0           #carga el retorno de strlen como 3 argumento
+    	li v0, SYS_write      #carga syscall en v0
+    	syscall               #llamado a SYS_write
+    	beqz a3, ok  	      #a3=0 --> syscall OK, a3=1 --> syscall error 
+error:  li v0, -1          #si error devuelve -1
 ok:                 	  #result syscall == v0 == #bytes escritos
-    lw gp, 24(sp)	      #restore gp
-    lw $fp,28(sp)	      #restore fp
-    lw ra,32(sp)	      #restore ra
-    addu sp,sp,40	      #restore stack frame
-    jr ra                 #salta a la direccion siguiente a la que la haya llamado
+    	lw gp, 24(sp)	      #restore gp
+    	lw $fp, 28(sp)	      #restore fp
+    	lw ra, 32(sp)	      #restore ra
+    	addu sp, sp, 40	      #restore stack frame
+    	jr ra                 #salta a la direccion siguiente a la que la haya llamado
 .end print_string
 
