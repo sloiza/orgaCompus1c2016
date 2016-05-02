@@ -7,42 +7,42 @@
 	.ent 	matrix_multiply
 matrix_multiply:
 		
-		.frame  $fp, 52, ra
+		.frame  $fp, 56, ra
 		.set 	noreorder
 		.cpload t9
 		.set	reorder
-		subu sp, sp,52
-		.cprestore 48
-		sw $fp, 44(sp)
+		subu sp, sp,56
+		.cprestore 52
+		sw $fp, 48(sp)
 		move $fp,sp
 
-		sw 		a0, 52($fp) #guardo dir m1
-		sw 		a1, 56($fp) #guardo dir m2
-		sw 		a2, 60($fp) #guardo dir out
+		sw 		a0, 56($fp) #guardo dir m1
+		sw 		a1, 60($fp) #guardo dir m2
+		sw 		a2, 64($fp) #guardo dir out
 
 
 
-		lw 		t0,52($fp) #t0= dir matrix m1
+		lw 		t0,56($fp) #t0= dir matrix m1
 		li 		t1, 0
 		addu 	t2, t0, t1 #cargo valor de rows
 		lw 		t2, 0(t2)
 		sw 		t2, 0($fp)
-		addu 	t1, t1, 8
+		addiu 	t1, t1, 8
 		addu 	t3, t0, t1 #cargo dir de array de m1
 		lw 		t3, 0(t3)
 		sw 		t3, 4($fp)
 
-		lw 		t0,56($fp) #t0= dir matrix m2
+		lw 		t0,60($fp) #t0= dir matrix m2
 		li 		t1, 0
-		addu 	t1, t1, 8
+		addiu 	t1, t1, 8
 		addu 	t3, t0, t1 #cargo dir de array de m2
 		lw 		t3, 0(t3)
 		sw 		t3, 8($fp)
 
 
-		lw 		t0,60($fp) #t0= dir matrix out
+		lw 		t0,64($fp) #t0= dir matrix out
 		li 		t1, 0
-		addu 	t1, t1, 8
+		addiu 	t1, t1, 8
 		addu 	t3, t0, t1 #cargo dir de array de out
 		lw 		t3, 0(t3)
 		sw 		t3, 12($fp)
@@ -62,8 +62,9 @@ f1: 	lw 		t0, 20($fp)  #t0= i
 
 f2:		lw  	t0,28($fp) #t0 = k
 		lw  	t1,0($fp)  #t1= rows
-		bge 	t0,t1,endf2   #k<c2
-		li.d  	$f0,0.00000  #f0=sum=0
+		bge 	t0,t1,endf2   #k<rows
+		li.d  	$f0, 0  #f0=sum=0
+		
 		lw  	t1,20($fp) #t1 = i
 		sw  	t1, 32($fp) #m =i
 		lw  	t2, 28($fp) #t2=k
@@ -72,12 +73,13 @@ f2:		lw  	t0,28($fp) #t0 = k
 f3: 	lw  	t2, 24($fp) #t2 =j
 		lw  	t3, 40($fp) #t3=cantidad elementos
 		bge 	t2,t3,endf3 #j< cantidad elementos
-		lw 		t1,32($fp) #t1=m
 		lw  	t3, 4($fp) #t3=m1
-		addu	t1,t1,8 #t1=m+8 (8bytes)
+		lw 		t1,32($fp) #t1=m
+		sll 	t1,t1,3  #t1= m*8
 		addu 	t3,t3,t1  #t3 = &m1[m]
 		lw  	t4, 8($fp) #t4=m2
-		addu 	t2,t2,8  #t2= j+8
+		lw 		t2, 24($fp)
+		sll 	t2, t2, 3 #t2 = j*8
 		addu 	t4,t4,t2  #t4= &m2[j]
 		l.d   	$f2,0(t3) #f1 = m1[m]
 		l.d   	$f4,0(t4) #f2= m2[j]
@@ -93,7 +95,7 @@ f3: 	lw  	t2, 24($fp) #t2 =j
 		j    	f3
 endf3: 	lw 		t1, 12($fp) #t1=out
 		lw 		t2, 16($fp) #t2=pos
-		addu 	t2,t2,8  #t2=pos+8
+		sll 	t2,t2,3  #t2=pos*8
 		addu 	t1,t1,t2 # t1= &out[pos]
 		s.d 	$f0,0(t1)  #out[pos]=sum
 		lw 		t2,16($fp) #t2=pos
@@ -111,16 +113,9 @@ endf2: 	lw 		t0, 20($fp) #t0 = i
 
 
 endf1: 	
-	lw t0, 60($fp) #dir matrix out
-	li t3, 0
-	lw t1, 12($fp) #out
-	lw t2, 0($fp) #rows
-	addu t3, t3, t0
-	sw t1,8(t0)
-
 	move sp, $fp
-	lw $fp, 48(sp) #recupero fp
-	addu sp,sp,52 #restablezco stack frame
+	lw $fp, 52(sp) #recupero fp
+	addu sp,sp,56 #restablezco stack frame
 	jr ra
 	.end matrix_multiply
 
