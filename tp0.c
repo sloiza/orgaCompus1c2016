@@ -135,6 +135,8 @@ void destroy_matrix(matrix_t* matriz){
 }
 
 
+
+
 // Imprime matrix_t
 int print_matrix(FILE* fp, matrix_t* matrix){
 	int dim = (*matrix).rows;
@@ -171,17 +173,17 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	return 0;
 }
 
- // ssize_t print_string(int fd, char* str){
+/* ssize_t print_string(int fd, char* str){
 
- //     ssize_t retorno = 0;
- // 	retorno = write(fd, str, strlen(str)); // llamado a syscall
- // 	if(retorno < 0){
- //         return -1;
- // 	}
- // 	return retorno;
- // }
+     ssize_t retorno = 0;
+ 	retorno = write(fd, str, strlen(str)); // llamado a syscall
+ 	if(retorno < 0){
+         return -1;
+ 	}
+ 	return retorno;
+ }
 
-
+*/
 // argc == argument count, argv== argument vector
  int main(int argc, char *argv[]) {
 
@@ -190,7 +192,6 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	}else{
 		do{
             int dimension = readMatrixDimension();
-            printf("DIM MATRIX %d\n", dimension);
             if(feof(stdin)){
                 return 0;
             }
@@ -200,24 +201,18 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
     			matrix_t* matrizResultado = create_matrix(dimension,dimension);
-    			printf("m1: %p\n", matrix1 );
-    			printf("m1.array: %p\n", (*matrix1).array );
-    			printf("m2: %p\n", matrix2 );
-    			printf("m2.array: %p\n", (*matrix2).array );
-    			printf("out: %p\n", matrizResultado );
-    			printf("out.array: %p\n", (*matrizResultado).array );
+    			//printf("m1: %p\n", matrix1 );
+    			//printf("m1.array: %p\n", (*matrix1).array );
+    			//printf("m2: %p\n", matrix2 );
+    			//printf("m2.array: %p\n", (*matrix2).array );
+    			//printf("out: %p\n", matrizResultado );
+    			//printf("out.array: %p\n", (*matrizResultado).array );
 	            matrix_multiply(matrix1, matrix2, matrizResultado);
-	            printf("out multiply: %p\n", matrizResultado );
-    			printf("out.array: %p\n", (*matrizResultado).array );
+	            //printf("out multiply: %p\n", matrizResultado );
+    			//printf("out.array: %p\n", (*matrizResultado).array );
+    			size_t rows = (*matrizResultado).rows;
+    			//printf("ROWS: %zd\n", rows);
 	            print_matrix(stdout, matrizResultado);
-	            size_t size = sizeof(size_t);
-	            printf("Size: %zd\n", size);
-	            size_t mat = sizeof(matrix_t);
-	            printf("Size mat: %zd\n", mat);
-   	            size_t mat1 = sizeof(matrix1);
-	            printf("Size mat 1 : %zd\n", mat1);
-   	            size_t mat2 = sizeof(matrix2);
-	            printf("Size mat 2 : %zd\n", mat2);
 
 	            //Borra las matrices creadas
 	            destroy_matrix(matrix1);
