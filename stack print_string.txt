@@ -1,0 +1,17 @@
+Descripcion stack de print_string
+------------STACK PREVIO------------
+--- a3 <-44($fp) 	// no usado
+--- a2 <-40($fp) 	// no usado
+--- a1 <-36($fp) 	== str
+--- a0 <-32($fp) 	== file descriptor
+------------STACK PREVIO------------
+------------STACK ACTUAL------------
+--- -- <-28($fp)  // padding
+--- ra <-24($fp)
+---	fp <-20($fp)
+--- gp <-16($fp)
+--- a3 <- 12($fp) // ABA
+--- a2 <- 8($fp)	// ABA
+--- a1 <- 4($fp)	// ABA
+--- a0 <- 0($fp)	// ABA
+------------STACK ACTUAL------------
