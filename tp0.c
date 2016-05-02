@@ -142,12 +142,19 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	int dim = (*matrix).rows;
 
 	char* string = (char*)malloc(200*sizeof(char)); //buffer 200 bytes
+	if(string == NULL){
+		fprintf(stderr, "Error malloc \n");
+		 exit(EXIT_FAILURE);
+	}
 	sprintf(string, "%d", dim); // carga la dimension en el string
 
 	int bufferDouble = 10*sizeof(char); //buffer 10 bytes
 	char* stringAux = (char*)malloc(bufferDouble); 
+	if(stringAux == NULL){
+		fprintf(stderr, "Error malloc \n");
+		 exit(EXIT_FAILURE);
+	}
 	for(int i=0;i<dim*dim;i++){
-//		fprintf(fd, " %lf",(*matrix).array[i]); // implementacion anterior
         snprintf(stringAux, bufferDouble, " %lf ", (*matrix).array[i]);
 		strcat(string, stringAux); // concatena el elemento actual en el string
 	}
@@ -201,17 +208,7 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
     			matrix_t* matrizResultado = create_matrix(dimension,dimension);
-    			//printf("m1: %p\n", matrix1 );
-    			//printf("m1.array: %p\n", (*matrix1).array );
-    			//printf("m2: %p\n", matrix2 );
-    			//printf("m2.array: %p\n", (*matrix2).array );
-    			//printf("out: %p\n", matrizResultado );
-    			//printf("out.array: %p\n", (*matrizResultado).array );
 	            matrix_multiply(matrix1, matrix2, matrizResultado);
-	            //printf("out multiply: %p\n", matrizResultado );
-    			//printf("out.array: %p\n", (*matrizResultado).array );
-    			size_t rows = (*matrizResultado).rows;
-    			//printf("ROWS: %zd\n", rows);
 	            print_matrix(stdout, matrizResultado);
 
 	            //Borra las matrices creadas
