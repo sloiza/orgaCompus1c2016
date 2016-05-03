@@ -137,10 +137,10 @@ print_string:
     	.set reorder
 
    	 	subu sp,sp,16         #reservo el stackframe
-    	.cprestore 8          #lw y sw del gp en 8(sp) automatico
+    	.cprestore 0          #lw y sw del gp en 0(sp) automatico
 
     	sw  $fp, 4(sp)		  #guarda fp
-    	sw ra, 12(sp)
+    	sw ra, 8(sp)		  #guarda ra
 		move $fp, sp		  #fp=sp
     	sw	a0, 16($fp)       #guarda 1°arg (file descriptor)
     	sw	a1, 20($fp)       #guarda 2°arg (string)
@@ -154,9 +154,9 @@ print_string:
     	beqz a3, ok  	      #a3=0 --> syscall OK, a3=1 --> syscall error 
 error:  li v0, -1             #si error devuelve -1
 ok:                 	      #result syscall == v0 == #bytes escritos
-    	lw gp, 8(sp)	      #restore gp
+    	lw gp, 0(sp)	      #restore gp
     	lw $fp, 4(sp)	      #restore fp
-    	lw ra, 12(sp)
+    	lw ra, 8(sp)		  #restore ra
 		addu sp, sp, 16	      #restore stack frame
     	jr ra                 #salta a la direccion siguiente a la que la haya llamado
 .end print_string
