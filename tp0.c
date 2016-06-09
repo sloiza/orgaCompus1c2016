@@ -67,6 +67,13 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
     (*matriz).rows = filas;
     (*matriz).cols = columnas;
 
+    // NUEVO
+    // Inicializa la matriz
+    for(int i = 0; i < filas * columnas ; i++){
+		(*matriz).array[i] = 0;
+    }
+
+
     return matriz;
 }
 // Carga la matrix previamente creada con floats de la matrix
@@ -125,6 +132,31 @@ matrix_t* readMatrix(matrix_t* matrix){
 
  // }
 
+void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* mr, int bs){
+	size_t n, en, i, j, k, kk, jj;
+	double sum;
+	double m1e, m2e;
+	n = m1->rows;
+	en = bs*(n/bs);
+	for(kk=0; kk<en; kk+=bs){
+		for(jj=0; jj<en; jj+=bs){
+			for(i=0; i<n; i++){
+				for(j=jj; j<jj+bs; j++) {
+					sum = mr->array[i*n+j];
+					for(k=kk; k<kk+bs; k++) {
+						m1e = m1->array[i*n+k];
+						m2e = m2->array[k*n+j];
+						sum += m1e * m2e;
+					}
+				mr->array[i*n+j] = sum;
+				}
+			}
+		}
+	}
+	
+}
+
+
 // Destructor de matrix_t
 void destroy_matrix(matrix_t* matriz){
     if(matriz != NULL){
@@ -134,17 +166,13 @@ void destroy_matrix(matrix_t* matriz){
 	}
 }
 
-
-
-
 // Imprime matrix_t
 int print_matrix(FILE* fp, matrix_t* matrix){
 	int dim = (*matrix).rows;
-
 	char* string = (char*)malloc(200*sizeof(char)); //buffer 200 bytes
 	if(string == NULL){
 		fprintf(stderr, "Error malloc \n");
-		 exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	sprintf(string, "%d", dim); // carga la dimension en el string
 
@@ -169,10 +197,10 @@ int print_matrix(FILE* fp, matrix_t* matrix){
     }
 
 	if(print_string(fd, string) == -1){
-        fprintf(stderr, "Error write syscall");
-	    free(string);
-        free(stringAux);
-        exit(EXIT_FAILURE);
+         fprintf(stderr, "Error write syscall");
+	     free(string);
+         free(stringAux);
+         exit(EXIT_FAILURE);
 	}
     free(string);
     free(stringAux);
@@ -180,7 +208,7 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	return 0;
 }
 
-/* ssize_t print_string(int fd, char* str){
+ ssize_t print_string(int fd, char* str){
 
      ssize_t retorno = 0;
  	retorno = write(fd, str, strlen(str)); // llamado a syscall
@@ -190,7 +218,7 @@ int print_matrix(FILE* fp, matrix_t* matrix){
  	return retorno;
  }
 
-*/
+
 // argc == argument count, argv== argument vector
  int main(int argc, char *argv[]) {
 
@@ -203,12 +231,16 @@ int print_matrix(FILE* fp, matrix_t* matrix){
                 return 0;
             }
             if(dimension > 0){
+            	// NUEVO
+            	// cambiar esto segun el tamaño de la matriz
+            	int bs = 2;
+
 	            matrix_t* matrix1 = create_matrix(dimension,dimension);
 	            matrix1 = readMatrix(matrix1);
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
 	            matrix2 = readMatrix(matrix2);
     			matrix_t* matrizResultado = create_matrix(dimension,dimension);
-	            matrix_multiply(matrix1, matrix2, matrizResultado);
+	            matrix_multiply(matrix1, matrix2, matrizResultado, bs);
 	            print_matrix(stdout, matrizResultado);
 
 	            //Borra las matrices creadas
