@@ -233,7 +233,12 @@ int print_matrix(FILE* fp, matrix_t* matrix){
             if(dimension > 0){
             	// NUEVO
             	// cambiar esto segun el tamaño de la matriz
-            	int bs = 2;
+            	int bs = 1;
+            	int resto = dimension % bs;
+            	if(resto != 0){
+            		fprintf(stderr, "Error: bs no es múltiplo de dimensión \n");
+            		exit(EXIT_FAILURE);
+            	}
 
 	            matrix_t* matrix1 = create_matrix(dimension,dimension);
 	            matrix1 = readMatrix(matrix1);
@@ -256,4 +261,5 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 	}
 	return 0;
 }
+
 
