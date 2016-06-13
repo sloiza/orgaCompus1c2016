@@ -1,0 +1,87 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// bs=256
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+[tbotalla@localhost orgaCompus1c2016]$ valgrind --tool=cachegrind ./tp0 < fileTest/test256x256.txt > fileTest/out.txt
+==11210== Cachegrind, a cache and branch-prediction profiler
+==11210== Copyright (C) 2002-2013, and GNU GPL'd, by Nicholas Nethercote et al.
+==11210== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==11210== Command: ./tp0
+==11210== 
+--11210-- warning: L3 cache found, using its data for the LL simulation.
+
+==11210== 
+==11210== I   refs:      5,578,222,225
+==11210== I1  misses:            1,442
+==11210== LLi misses:            1,294
+==11210== I1  miss rate:          0.00%
+==11210== LLi miss rate:          0.00%
+==11210== 
+==11210== D   refs:      2,356,678,011  (2,235,061,626 rd   + 121,616,385 wr)
+==11210== D1  misses:      469,326,967  (  467,433,509 rd   +   1,893,458 wr)
+==11210== LLd misses:           40,829  (        2,041 rd   +      38,788 wr)
+==11210== D1  miss rate:          19.9% (         20.9%     +         1.5%  )
+==11210== LLd miss rate:           0.0% (          0.0%     +         0.0%  )
+==11210== 
+==11210== LL refs:         469,328,409  (  467,434,951 rd   +   1,893,458 wr)
+==11210== LL misses:            42,123  (        3,335 rd   +      38,788 wr)
+==11210== LL miss rate:            0.0% (          0.0%     +         0.0%  )
+
+
+
+[tbotalla@localhost orgaCompus1c2016]$ cg_annotate --auto=yes cachegrind.out.11210 
+
+           Ir I1mr ILmr         Dr        D1mr DLmr        Dw    D1mw   DLmw  file:function
+          6    0    0           0          0    0          5      1      0  void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* mr, int bs){
+
+    461,056    1    1     263,168          0    0        256      0      0  	for(j=jj; j<jj+bs; j++) {
+    720,896    1    1     393,216      8,193    0     65,536      0      0  	sum = mr->array[i*n+j];
+118,030,336    1    1  67,371,008          0    0     65,536      0      0  	for(k=kk; k<kk+bs; k++) {
+184,549,376    1    1 100,663,296     82,433    0 16,777,216      0      0  	m1e = m1->array[i*n+k];
+184,549,376    0    0 100,663,296 16,777,216    0 16,777,216      0      0  	m2e = m2->array[k*n+j];
+ 83,886,080    0    0  50,331,648          0    0 16,777,216      0      0  	sum += m1e * m2e;
+          .    .    .           .          .    .          .      .      .  	}
+    720,896    0    0     393,216          0    0     65,536 65,536      0  	mr->array[i*n+j] = sum;
+          3    0    0           2          1    0          0      0      0  }
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// bs=8
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+[tbotalla@localhost orgaCompus1c2016]$ valgrind --tool=cachegrind ./tp0 < fileTest/test256x256.txt > fileTest/out.txt
+==11433== Cachegrind, a cache and branch-prediction profiler
+==11433== Copyright (C) 2002-2013, and GNU GPL'd, by Nicholas Nethercote et al.
+==11433== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==11433== Command: ./tp0
+==11433== 
+--11433-- warning: L3 cache found, using its data for the LL simulation.
+==11433== 
+==11433== I   refs:      5,658,839,771
+==11433== I1  misses:            1,442
+==11433== LLi misses:            1,294
+==11433== I1  miss rate:          0.00%
+==11433== LLi miss rate:          0.00%
+==11433== 
+==11433== D   refs:      2,405,507,661  (2,277,533,486 rd   + 127,974,175 wr)
+==11433== D1  misses:      453,450,372  (  451,622,450 rd   +   1,827,922 wr)
+==11433== LLd misses:           40,829  (        2,041 rd   +      38,788 wr)
+==11433== D1  miss rate:          18.8% (         19.8%     +         1.4%  )
+==11433== LLd miss rate:           0.0% (          0.0%     +         0.0%  )
+==11433== 
+==11433== LL refs:         453,451,814  (  451,623,892 rd   +   1,827,922 wr)
+==11433== LL misses:            42,123  (        3,335 rd   +      38,788 wr)
+==11433== LL miss rate:            0.0% (          0.0%     +         0.0%  )
+
+
+[tbotalla@localhost orgaCompus1c2016]$ cg_annotate --auto=yes cachegrind.out.11433 
+           Ir I1mr ILmr         Dr      D1mr DLmr       Dw    D1mw   DLmw  file:function
+          6    0    0           0       0    0          5      1      0  void matrix_multiply(matrix_t* m1, matrix_t* m2, matrix_t* mr, int bs){
+ 17,039,360    1    1   9,437,184       0    0    262,144      0      0  for(j=jj; j<jj+bs; j++) {
+ 23,068,672    1    1  12,582,912 524,288    0  2,097,152      0      0  	sum = mr->array[i*n+j];
+136,314,880    1    1  75,497,472       0    0  2,097,152      0      0  		for(k=kk; k<kk+bs; k++) {
+184,549,376    1    1 100,663,296 524,288    0 16,777,216      0      0  			m1e = m1->array[i*n+k];
+184,549,376    0    0 100,663,296   8,207    0 16,777,216      0      0  			m2e = m2->array[k*n+j];
+ 83,886,080    0    0  50,331,648       0    0 16,777,216      0      0  			sum += m1e * m2e;
+          .    .    .           .       .    .          .      .      .  		}
+ 23,068,672    0    0  12,582,912       0    0  2,097,152      0      0  		mr->array[i*n+j] = sum;
+          3    0    0           2       1    0          0      0      0  }
