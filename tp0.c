@@ -67,7 +67,6 @@ matrix_t* create_matrix(size_t filas, size_t columnas){
     (*matriz).rows = filas;
     (*matriz).cols = columnas;
 
-    // NUEVO
     // Inicializa la matriz
     for(int i = 0; i < filas * columnas ; i++){
 		(*matriz).array[i] = 0;
@@ -82,7 +81,7 @@ matrix_t* readMatrix(matrix_t* matrix){
 	int cantNums, j;
 
 	cantNums = (*matrix).rows * (*matrix).rows;
-	
+
 	for(j =0;j<cantNums; j++){
 		if(fscanf(stdin, "%lf", &value) ==1){
 			if (ferror (stdin)){
@@ -169,21 +168,21 @@ void destroy_matrix(matrix_t* matriz){
 // Imprime matrix_t
 int print_matrix(FILE* fp, matrix_t* matrix){
 	int dim = (*matrix).rows;
-	char* string = (char*)malloc(200*sizeof(char)); //buffer 200 bytes
+	char* string = (char*)malloc((dim*dim*2)*sizeof(double));
 	if(string == NULL){
 		fprintf(stderr, "Error malloc \n");
 		exit(EXIT_FAILURE);
 	}
 	sprintf(string, "%d", dim); // carga la dimension en el string
 
-	int bufferDouble = 10*sizeof(char); //buffer 10 bytes
+	size_t bufferDouble = 2 * sizeof(double);
 	char* stringAux = (char*)malloc(bufferDouble); 
 	if(stringAux == NULL){
 		fprintf(stderr, "Error malloc \n");
-		 exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	for(int i=0;i<dim*dim;i++){
-        snprintf(stringAux, bufferDouble, " %lf ", (*matrix).array[i]);
+        snprintf(stringAux, bufferDouble, " %lf", (*matrix).array[i]);
 		strcat(string, stringAux); // concatena el elemento actual en el string
 	}
     strcat(string, "\n");
@@ -210,7 +209,7 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 
  ssize_t print_string(int fd, char* str){
 
-     ssize_t retorno = 0;
+    ssize_t retorno = 0;
  	retorno = write(fd, str, strlen(str)); // llamado a syscall
  	if(retorno < 0){
          return -1;
@@ -231,16 +230,36 @@ int print_matrix(FILE* fp, matrix_t* matrix){
                 return 0;
             }
             if(dimension > 0){
-            	// NUEVO
             	// cambiar esto segun el tamaño de la matriz
-            	int bs = 2;
+            	int bs = 8;
+            	// Para calculo del tiempo
+            	uint64_t diff; 
+            	struct timespec start, end;
 
 	            matrix_t* matrix1 = create_matrix(dimension,dimension);
+
+	            clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start); /* mark start time */ 
 	            matrix1 = readMatrix(matrix1);
+	           	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end); /* mark the end time */
+	            diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec; 
+	           	fprintf(stdout, "Tiempo lectura matriz 1 = %llu nanoseconds\n", (long long unsigned int) diff);
+
+
 	            matrix_t* matrix2 = create_matrix(dimension,dimension);
+	           	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start); /* mark start time */ 
 	            matrix2 = readMatrix(matrix2);
+	            clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end); /* mark the end time */
+	            diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec; 
+	           	fprintf(stdout, "Tiempo lectura matriz 2 = %llu nanoseconds\n", (long long unsigned int) diff);
+
     			matrix_t* matrizResultado = create_matrix(dimension,dimension);
+
+    			clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start); /* mark start time */ 
 	            matrix_multiply(matrix1, matrix2, matrizResultado, bs);
+	           	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end); /* mark the end time */
+	            diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec; 
+	           	fprintf(stdout, "Tiempo de multiplicacion = %llu nanoseconds\n", (long long unsigned int) diff);
+
 	            print_matrix(stdout, matrizResultado);
 
 	            //Borra las matrices creadas
