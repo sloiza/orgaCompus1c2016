@@ -45,6 +45,13 @@
 
 
 
+// TODO, me parece que son todos misses de datos en L1 porque como el tamaño de la cache no da para alocar
+256 elementos double (256*8B == 2KB)....
+Para el caso bs=8, se realiza una multiplicacion por bloques de 8x8 pudiendo ser cargada cada fila/columna
+exactamente en una linea de
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // bs=8
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,3 +92,9 @@
           .    .    .           .       .    .          .      .      .  		}
  23,068,672    0    0  12,582,912       0    0  2,097,152      0      0  		mr->array[i*n+j] = sum;
           3    0    0           2       1    0          0      0      0  }
+
+
+b) para sum = mr->array[i*n+j]:
+		bs=256: #writes = 256*256 y #reads = 6*256*256 = 393216 (6 reads por c/elemento).. analizar
+		bs=8: #writes = 2,097,152 y #reads = 75,497,472 (36 reads por c/write).. analizar
+para m1e = m1->array[i*n+k]:
