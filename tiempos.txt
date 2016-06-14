@@ -82,6 +82,11 @@ Tiempo de punta a punta = 1618788166 nanoseconds
 
 -->tiempo promedio de punta a punta = 1616746511 nanoseconds
 
+SPEEDUPS:
+
+SU(multiply) = 176448454/145785481 = 1,21
+SU(puntapunta) = 1760174909/1616746511 = 1,09
+
 
 
 // matriz de 1024x1024 (no tiene sentido hacerlo para 6 matrices, tarda una eternidad):
@@ -89,12 +94,17 @@ Tiempo de punta a punta = 1618788166 nanoseconds
 //bs=8
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Tiempo lectura matriz 1 = 426242794 nanoseconds
-Tiempo lectura matriz 2 = 422676113 nanoseconds
-Tiempo de multiplicacion = 13231102862 nanoseconds
-Tiempo de punta a punta = 13231102862 nanoseconds // flashio el gettime
+Tiempo de multiplicacion = 13141994640 nanoseconds
+Tiempo de punta a punta = 1240749777681 nanoseconds (20 min!!)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //bs=1024
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Tiempo de multiplicacion = 49744798808 nanoseconds
+Tiempo de punta a punta = 1518170004933 nanoseconds (25 min!!)
+
+SPEEDUPS:
+
+SU(multiply) = 49744798808/13141994640 = 3,78
+SU(puntapunta) = 1518170004933/1240749777681 = 1,22

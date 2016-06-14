@@ -95,18 +95,30 @@ exactamente en una linea de
 
 
 b) 
-para sum = mr->array[i*n+j]:
-		bs=256: #writes = 256*256 = 65536 y #reads = 6*256*256 = 393216 (6 reads por c/write).. analizar
+bs = 256 = 256*8B = 2KB, 
+bs = 8 = 8*8B = 64B
+
+-para sum = mr->array[i*n+j]:
+		bs=256: #writes = 256*256 = 65536 y #reads = 6*256*256 = 393,216 (6 reads por c/write).. analizar
+En este caso hace un write por cada elemento de la matriz resultado, ya que (2KB / 8) = 256 elementos
 		bs=8: #writes = 2,097,152 y #reads = 75,497,472 (36 reads por c/write).. analizar
+Hace 32 writes (2097152/65536) por cada elemento de la matriz resultado, ya que (64B * 32)/8 = 256 elementos 
 
-para m1e = m1->array[i*n+k]:
+-para m1e = m1->array[i*n+k]:
 		bs=256: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+Hace 256 writes por cada elemento ()
 		bs=8: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+Hace 256 writes por cada elemento ()
 
-para m2e = m2->array[k*n+j]:
+-para m2e = m2->array[k*n+j]:
 		bs=256: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+Hace 256 writes por cada elemento ()
 		bs=8: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+Hace 256 writes por cada elemento ()
 
-para mr->array[i*n+j] = sum:
+-para mr->array[i*n+j] = sum:
 		bs=256: #writes = 65,536 y #reads = 6*256*256 = 393,216 (6 reads por c/write).. analizar
+Hace 1 write por cada elemento,
 		bs=8: #writes = 2,097,152 y #reads = 12,582,912 (6 reads por c/write).. analizar
+Hace 32 writes por cada elemento,
+
