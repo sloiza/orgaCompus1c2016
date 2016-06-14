@@ -94,7 +94,19 @@ exactamente en una linea de
           3    0    0           2       1    0          0      0      0  }
 
 
-b) para sum = mr->array[i*n+j]:
-		bs=256: #writes = 256*256 y #reads = 6*256*256 = 393216 (6 reads por c/elemento).. analizar
+b) 
+para sum = mr->array[i*n+j]:
+		bs=256: #writes = 256*256 = 65536 y #reads = 6*256*256 = 393216 (6 reads por c/write).. analizar
 		bs=8: #writes = 2,097,152 y #reads = 75,497,472 (36 reads por c/write).. analizar
+
 para m1e = m1->array[i*n+k]:
+		bs=256: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+		bs=8: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+
+para m2e = m2->array[k*n+j]:
+		bs=256: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+		bs=8: #writes = 16,777,216 y #reads = 100,663,296 (6 reads por c/write).. analizar
+
+para mr->array[i*n+j] = sum:
+		bs=256: #writes = 65,536 y #reads = 6*256*256 = 393,216 (6 reads por c/write).. analizar
+		bs=8: #writes = 2,097,152 y #reads = 12,582,912 (6 reads por c/write).. analizar
