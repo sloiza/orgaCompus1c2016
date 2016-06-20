@@ -1,0 +1,100 @@
+// 6 matrices de 256x256:
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//bs=256
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Tiempo lectura matriz 1 = 27700646 nanoseconds
+Tiempo lectura matriz 2 = 26800377 nanoseconds
+Tiempo de multiplicacion = 176052041 nanoseconds
+
+Tiempo lectura matriz 1 = 27193589 nanoseconds
+Tiempo lectura matriz 2 = 28084724 nanoseconds
+Tiempo de multiplicacion = 180073750 nanoseconds
+
+Tiempo lectura matriz 1 = 33267382 nanoseconds
+Tiempo lectura matriz 2 = 27007097 nanoseconds
+Tiempo de multiplicacion = 176243696 nanoseconds
+
+Tiempo lectura matriz 1 = 26993436 nanoseconds
+Tiempo lectura matriz 2 = 26947118 nanoseconds
+Tiempo de multiplicacion = 175320760 nanoseconds
+
+Tiempo lectura matriz 1 = 26893256 nanoseconds
+Tiempo lectura matriz 2 = 26840019 nanoseconds
+Tiempo de multiplicacion = 175502784 nanoseconds
+
+Tiempo lectura matriz 1 = 26918707 nanoseconds
+Tiempo lectura matriz 2 = 27114524 nanoseconds
+Tiempo de multiplicacion = 175497693 nanoseconds
+
+-->tiempo lectura promedio = 27646739 nanoseconds
+-->tiempo de multiplicacion promedio = 176448454 nanoseconds
+
+// tiempo desde antes del readMatrix hasta despues del print_matrix
+Tiempo de punta a punta = 1657786370 nanoseconds
+Tiempo de punta a punta = 1646092396 nanoseconds
+Tiempo de punta a punta = 1676121240 nanoseconds
+Tiempo de punta a punta = 1825471625 nanoseconds
+Tiempo de punta a punta = 1972772486 nanoseconds
+Tiempo de punta a punta = 1782805340 nanoseconds
+
+-->tiempo promedio de punta a punta = 1760174909 nanoseconds
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//bs=8
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Tiempo lectura matriz 1 = 33553462 nanoseconds
+Tiempo lectura matriz 2 = 26064998 nanoseconds
+Tiempo de multiplicacion = 145225896 nanoseconds
+
+Tiempo lectura matriz 1 = 26522403 nanoseconds
+Tiempo lectura matriz 2 = 26613462 nanoseconds
+Tiempo de multiplicacion = 147564107 nanoseconds
+
+Tiempo lectura matriz 1 = 26003261 nanoseconds
+Tiempo lectura matriz 2 = 25966194 nanoseconds
+Tiempo de multiplicacion = 147276453 nanoseconds
+
+Tiempo lectura matriz 1 = 26120035 nanoseconds
+Tiempo lectura matriz 2 = 26001274 nanoseconds
+Tiempo de multiplicacion = 144194744 nanoseconds
+
+Tiempo lectura matriz 1 = 26504134 nanoseconds
+Tiempo lectura matriz 2 = 26805781 nanoseconds
+Tiempo de multiplicacion = 145759359 nanoseconds
+
+Tiempo lectura matriz 1 = 26214077 nanoseconds
+Tiempo lectura matriz 2 = 26439629 nanoseconds
+Tiempo de multiplicacion = 144692327 nanoseconds
+
+-->tiempo lectura promedio = 26900725 nanoseconds
+-->tiempo de multiplicacion promedio = 145785481 nanoseconds
+
+
+// tiempo desde antes del readMatrix hasta despues del print_matrix
+Tiempo de punta a punta = 1620260605 nanoseconds
+Tiempo de punta a punta = 1618849084 nanoseconds
+Tiempo de punta a punta = 1611345490 nanoseconds
+Tiempo de punta a punta = 1624497596 nanoseconds
+Tiempo de punta a punta = 1606738127 nanoseconds
+Tiempo de punta a punta = 1618788166 nanoseconds
+
+-->tiempo promedio de punta a punta = 1616746511 nanoseconds
+
+
+
+// matriz de 1024x1024 (no tiene sentido hacerlo para 6 matrices, tarda una eternidad):
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//bs=8
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Tiempo lectura matriz 1 = 426242794 nanoseconds
+Tiempo lectura matriz 2 = 422676113 nanoseconds
+Tiempo de multiplicacion = 13231102862 nanoseconds
+Tiempo de punta a punta = 13231102862 nanoseconds // flashio el gettime
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//bs=1024
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
