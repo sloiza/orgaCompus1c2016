@@ -1,12 +1,15 @@
 	#ifndef TP0_H_
 	#define TP0_H_
 	#define _GNU_SOURCE
+	#define BILLION 1000000000L
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
 	#include <unistd.h>
 	#include <stdbool.h>
 	#include <string.h>
+	#include <time.h> /* for clock_gettime */
+	#include <stdint.h> /* for uint64 definition */
 
 	typedef struct matrix {
         size_t rows;
