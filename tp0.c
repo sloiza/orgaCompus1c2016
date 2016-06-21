@@ -225,6 +225,9 @@ int print_matrix(FILE* fp, matrix_t* matrix){
 		return 1; // Error en los argumentos
 	}else{
 		do{
+			uint64_t diff; 
+		 	struct timespec startL, endL;
+		 	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startL); /* mark start time */ 
             int dimension = readMatrixDimension();
             if(feof(stdin)){
                 return 0;
@@ -274,6 +277,9 @@ int print_matrix(FILE* fp, matrix_t* matrix){
             	fprintf(stderr, "Error: Matriz inválida para multiplicación \n");
             	exit(EXIT_FAILURE);
             }
+		 	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endL); /* mark the end time */
+	        diff = BILLION * (endL.tv_sec - startL.tv_sec) + endL.tv_nsec - startL.tv_nsec; 
+	       	fprintf(stdout, "Tiempo Total l'inea = %llu nanoseconds\n", (long long unsigned int) diff);
 
 		}while(!feof(stdin));
 	}
